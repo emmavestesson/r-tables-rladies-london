@@ -1,0 +1,69 @@
+---
+title: "Making reproducible tables in R"
+subtitle: "A whirlwind tour"
+author: "Emma Vestesson"
+date: "2022-07-12"
+output:
+  xaringan::moon_reader:
+    css: ["default", "rladies", "rladies-fonts"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+# Background
+
+I am Senior Data Analyst at the Health Foundation and a PhD student at UCL and the Alan Turing Institute. This means that I spend a lot of my time writing papers and reports.
+
+--
+
+- I have been using ggplot2 to automate plot creation for years but for a long time I was creating tables manually
+- Copying and pasting from the R console is error prone
+- Hours wasted on formatting only to find out that a table needs updating
+- Switching to creating tables in R has saved me time and made paper writing easier
+
+---
+
+# Packages
+
+
+.pull-left[
+gt package  
+
+]
+
+.pull-right[
+gtsummary 
+]
+
+
+---
+class: inverse, center, middle
+
+# Get Started
+
+---
+
+# Hello World
+![](https://gt.rstudio.com/reference/figures/logo.svg)
+
+<img src="https://github.com/ddsjoberg/gtsummary/raw/main/man/figures/logo.png" style="width: 50%" />
+Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
+
+```{r eval=FALSE, tidy=FALSE}
+remotes::install_github("yihui/xaringan")
+```
+
+--
+
+You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
+
+- Create a new R Markdown document from the menu `File -> New File -> R Markdown -> From Template -> Ninja Presentation`;<sup>1</sup>
+
+--
+
+- Click the `Knit` button to compile it;
+
+--
