@@ -45,22 +45,56 @@ gtsummary
 
 # tbl_summary Summary statistics
 
+```{r}
+trial %>%
+  select(age, trt, marker) %>%
+  tbl_summary(
+    by = trt,
+    label = list(age = "Patient Age")
+  )
+```
 
 
 ---
 
 # tbl_cross cross tabing
 
+```{r}
+trial %>%
+  tbl_cross(row = trt, col = response) %>%
+  add_p() %>%
+  bold_labels()
+```
 
 ---
 
 # tbl_regression
 
+```{r}
+library(survival)
+
+ adjusted <- coxph(Surv(ttdeath, death) ~ age + marker, trial) %>%
+  tbl_regression(exponentiate = TRUE)
+ 
+ adjusted
+
+```
+
 ---
 
 # Combine tables
 
+```{r}
+theme_gtsummary_journal(journal = 'lancet')
+trial %>%
+  select(age, trt, marker) %>%
+  tbl_summary(
+    by = trt,
+    label = list(age = "Patient Age")
+  )
 
+reset_gtsummary_theme()
+```
 ---
 # Themes
 
