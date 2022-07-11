@@ -31,39 +31,53 @@ I am Senior Data Analyst at the Health Foundation and a PhD student at UCL and t
 
 .pull-left[
 gt package  
+![](https://gt.rstudio.com/reference/figures/logo.svg)
 
 ]
 
 .pull-right[
 gtsummary 
+<img src="https://github.com/ddsjoberg/gtsummary/raw/main/man/figures/logo.png" style="width: 70%" />
 ]
 
 
 ---
-class: inverse, center, middle
 
-# Get Started
+# tbl_summary Summary statistics
+
+
 
 ---
 
-# Hello World
-![](https://gt.rstudio.com/reference/figures/logo.svg)
+# tbl_cross cross tabing
 
-<img src="https://github.com/ddsjoberg/gtsummary/raw/main/man/figures/logo.png" style="width: 50%" />
-Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
 
-```{r eval=FALSE, tidy=FALSE}
-remotes::install_github("yihui/xaringan")
+---
+
+# tbl_regression
+
+---
+
+# Combine tables
+
+
+---
+# Themes
+
+Journals have different requirements
+
+---
+
+# Why do we need gt? 
+
+Allows almost any type of formatting
+
+I mainly use it when the dataset is too big for gtsummary
+---
+
+# A word of caution
+```{r, echo=FALSE, out.height="10%", out.width="73%"}
+knitr::include_graphics(here::here('print_engines.png'))
 ```
 
---
 
-You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
-
-- Create a new R Markdown document from the menu `File -> New File -> R Markdown -> From Template -> Ninja Presentation`;<sup>1</sup>
-
---
-
-- Click the `Knit` button to compile it;
-
---
