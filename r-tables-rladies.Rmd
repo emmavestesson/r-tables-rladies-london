@@ -12,6 +12,12 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
+```{r, include=FALSE}
+library(gtsummary)
+library(gt)
+library(palmerpenguins)
+
+```
 
 # Background
 
@@ -38,7 +44,7 @@ gt package
 
 .pull-right[
 gtsummary 
-<img src="https://github.com/ddsjoberg/gtsummary/raw/main/man/figures/logo.png" style="width: 80%" />
+<img src="https://github.com/ddsjoberg/gtsummary/raw/main/man/figures/logo.png" style="width: 90%" />
 ]
 
 ---
@@ -53,8 +59,9 @@ penguins %>%
 
 ---
 
-# tbl_summary Summary statistics
+# Summary statistics
 
+Next let's look at `tbl_summary()` 
 ```{r}
 penguins %>%
   select(bill_length_mm,body_mass_g) %>%
@@ -115,21 +122,31 @@ penguins %>%
 # tbl_regression
 
 ```{r}
-library(survival)
- m1 <- coxph(Surv(ttdeath, death) ~ age , trial) %>%
-  tbl_regression(exponentiate = TRUE)
+
+ m1 <- lm(body_mass_g ~ island, data = penguins) %>% 
+  tbl_regression()
 
  m1
 
 ```
+---
+
+```{r}
+
+
+ m1 %>% 
+  add_glance_table()
+
+```
+
 
 ---
 
 # Combine tables
 
 ```{r}
- m2 <- coxph(Surv(ttdeath, death) ~ age + marker, trial) %>%
-  tbl_regression(exponentiate = TRUE)
+ m2 <- lm(body_mass_g ~ island + sex, data = penguins) %>%
+  tbl_regression()
  
  tbl_merge(list(m1,m2), tab_spanner = c('Model 1', 'Model 2') )
 ```
@@ -175,14 +192,6 @@ tbl1
 
 The median age is `r inline_text(tbl1, variable = age, column = 'stat_1', pattern = '{median}') ` years
 
----
-
-# Why do we need gt? 
-
-I mainly use it when the dataset is too big for gtsummary
-
-Allows almost any type of formatting
-
 
 ---
 
@@ -190,6 +199,19 @@ Allows almost any type of formatting
 ```{r, echo=FALSE, out.height="10%", out.width="73%"}
 knitr::include_graphics(here::here('print_engines.png'))
 ```
+
+---
+
+# Why do we need gt? 
+
+I mainly use it when the dataset is too big for gtsummary
+
+
+Allows almost any type of formatting
+
+
+
+
 ---
 # Where to learn more
 
