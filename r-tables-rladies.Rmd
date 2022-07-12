@@ -51,35 +51,28 @@ penguins %>%
   bold_levels()
 ```
 
-
-
 ---
 
 # tbl_summary Summary statistics
 
 ```{r}
 penguins %>%
-  select(bill_length_mm, species, body_mass_g) %>%
+  select(bill_length_mm,body_mass_g) %>%
   tbl_summary(
-    by = species,
     label = list(bill_length_mm = "Bill length")
   )
 ```
 
+
+
 ---
-#  Prettyfying
+#  By species
 
 
 ```{r}
 penguins %>%
   select(bill_length_mm, species, body_mass_g) %>%
-  tbl_summary(
-    by = species,
-    label = list(bill_length_mm = "Bill length (mm)", 
-                 body_mass_g = "Body mass (g)" )
-  ) %>% 
-  italicize_labels() %>% 
-  modify_caption('A pretty table with penguin data')
+  tbl_summary(by = species  ) 
 ```
 
 ---
@@ -93,11 +86,27 @@ penguins %>%
     by = species,
     label = list(bill_length_mm = "Bill length (mm)", 
                  body_mass_g = "Body mass (g)" ),
-    statistic = list(bill_length_mm ~ "{median} ({p25}, {p75}), range {min}-{max}")
+  ) 
+```
+
+
+
+---
+#  Prettyfying
+
+```{r}
+penguins %>%
+  select(bill_length_mm, species, body_mass_g) %>%
+  tbl_summary(
+    by = species,
+    label = list(bill_length_mm = "Bill length (mm)", 
+                 body_mass_g = "Body mass (g)" ),
+        statistic = list(bill_length_mm ~ "{median} ({p25}, {p75}), range {min}-{max}")
   ) %>% 
   italicize_labels() %>% 
-  modify_caption('A pretty table with penguin data')
+  modify_caption('A pretty table with *penguin* **data**') 
 ```
+
 
 
 
