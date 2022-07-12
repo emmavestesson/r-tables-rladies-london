@@ -16,7 +16,7 @@ output:
 library(gtsummary)
 library(gt)
 library(palmerpenguins)
-
+library(dplyr)
 ```
 
 # Background
@@ -26,27 +26,37 @@ I am Senior Data Analyst at the Health Foundation and a PhD student at UCL and t
 --
 
 - I have been using ggplot2 to create plots for years but for a long time I was creating tables manually (ie exporting data to a csv file and formatting it)
-- Switching to making publication ready tables in R really improved my workflow
+
+--
+
+- Switching to making publication ready tables in R really improved my workflow!!!
+
+--
+
 - Copying and pasting from the R console is error prone
-- Hours wasted on formatting only to find out that a table needs updating
-- Switching to creating tables in R has saved me time and made paper writing easier
+
+- No longer wasting hours on formatting extracted data only to find out that a table needs updating
+
 
 ---
 
 # Packages
 
-
 .pull-left[
-gt package  
+
+<img src="https://github.com/ddsjoberg/gtsummary/raw/main/man/figures/logo.png" style="width: 100%" />
+]
+
+.pull-right[
+
 ![](https://gt.rstudio.com/reference/figures/logo.svg)
 
 ]
 
-.pull-right[
-gtsummary 
-<img src="https://github.com/ddsjoberg/gtsummary/raw/main/man/figures/logo.png" style="width: 90%" />
-]
+---
+class: center, inverse, middle
 
+# gtsummary
 ---
 
 # Cross tabing
@@ -119,8 +129,8 @@ penguins %>%
 
 ---
 
-# tbl_regression
-
+# Regressions
+Use `tbl_regression()` to extract regression results
 ```{r}
 
  m1 <- lm(body_mass_g ~ island, data = penguins) %>% 
@@ -176,21 +186,20 @@ reset_gtsummary_theme()
 # Inline text
 
 ```{r, echo = FALSE}
-tbl1 <- trial %>%
-  select(age, trt, marker) %>%
-  tbl_summary(
-    by = trt,
-    label = list(age = "Patient Age")
-  )
+tbl1 <- penguins %>%
+  select(bill_length_mm, species, body_mass_g) %>%
+  tbl_summary(by = species  ) %>% 
+  add_overall(last = TRUE)
+
 
 tbl1
 ```
 
+--
 
+`inline_text(tbl1, variable = bill_length_mm, column = 'stat_0', pattern = '{median}') `
 
-`inline_text(tbl1, variable = age, column = 'stat_1', pattern = '{median}') `
-
-The median age is `r inline_text(tbl1, variable = age, column = 'stat_1', pattern = '{median}') ` years
+The median bill length is `r inline_text(tbl1, variable = bill_length_mm, column = 'stat_0', pattern = '{median}') ` mm.
 
 
 ---
@@ -201,22 +210,78 @@ knitr::include_graphics(here::here('print_engines.png'))
 ```
 
 ---
+class: center, inverse, middle
+
+# gt
+
+---
 
 # Why do we need gt? 
 
-I mainly use it when the dataset is too big for gtsummary
+I mainly use gtsummary but gt is great when 
 
+- the data is already in the right format
 
-Allows almost any type of formatting
+--
 
+- the dataset is too big for gtsummary
 
+--
 
+- I want to make a lot of formatting changes
+
+---
+
+```{r}
+penguins_summary<- penguins %>% 
+  group_by(island) %>% 
+  summarise(obs = n(), body_mass_g_mean = mean(body_mass_g, na.rm = TRUE), male_p = mean(sex == 'male', na.rm = TRUE))
+
+```
+
+```{r}
+penguins_summary %>% 
+  gt()
+```
+---
+# Clean up the values
+```{r}
+penguins_summary %>% 
+  gt() %>% 
+  fmt_integer(columns = body_mass_g_mean) %>% 
+  fmt_percent(columns = male_p, decimals = 1)
+  
+```
+
+---
+# Format based on values
+
+```{r}
+penguins_summary %>% 
+  gt() %>% 
+  fmt_integer(columns = body_mass_g_mean) %>% 
+  fmt_percent(columns = male_p, decimals = 1) %>% 
+tab_style(style = cell_fill(color = "lightblue"),
+    locations = cells_body(columns = body_mass_g_mean,
+      rows = body_mass_g_mean >= 4500)
+  ) %>% 
+  tab_style(style = cell_text(color = "red", weight = "bold"),
+    locations = cells_body(
+      columns = male_p,
+      rows = male_p < 0.5
+    )
+  )
+
+```
 
 ---
 # Where to learn more
 
+This has been a quick tour of the parts of gt and gtsummary that I use but there is so much more functionality!
 
-[GT video tutorial](https://www.youtube.com/watch?v=z0UGmMOxl-c)
+[Blog post about creating gt tables](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/)
+
+[gt video tutorial](https://www.youtube.com/watch?v=z0UGmMOxl-c)
 
 [gtsummary video tutorial](https://www.youtube.com/watch?v=tANo9E1SYJE)
 
