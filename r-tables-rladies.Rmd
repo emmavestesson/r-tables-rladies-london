@@ -19,7 +19,8 @@ I am Senior Data Analyst at the Health Foundation and a PhD student at UCL and t
 
 --
 
-- I have been using ggplot2 to automate plot creation for years but for a long time I was creating tables manually
+- I have been using ggplot2 to create plots for years but for a long time I was creating tables manually (ie exporting data to a csv file and formatting it)
+- Switching to making publication ready tables in R really improved my workflow
 - Copying and pasting from the R console is error prone
 - Hours wasted on formatting only to find out that a table needs updating
 - Switching to creating tables in R has saved me time and made paper writing easier
@@ -37,8 +38,19 @@ gt package
 
 .pull-right[
 gtsummary 
-<img src="https://github.com/ddsjoberg/gtsummary/raw/main/man/figures/logo.png" style="width: 70%" />
+<img src="https://github.com/ddsjoberg/gtsummary/raw/main/man/figures/logo.png" style="width: 80%" />
 ]
+
+---
+
+# Cross tabing
+The simplest table is a cross table of two categorical variables
+```{r}
+penguins %>%
+  tbl_cross(row = island, col = year) %>% 
+  bold_levels()
+```
+
 
 
 ---
@@ -46,25 +58,48 @@ gtsummary
 # tbl_summary Summary statistics
 
 ```{r}
-trial %>%
-  select(age, trt, marker) %>%
+penguins %>%
+  select(bill_length_mm, species, body_mass_g) %>%
   tbl_summary(
-    by = trt,
-    label = list(age = "Patient Age")
+    by = species,
+    label = list(bill_length_mm = "Bill length")
   )
 ```
 
-
 ---
+#  Prettyfying
 
-# tbl_cross cross tabing
 
 ```{r}
-trial %>%
-  tbl_cross(row = trt, col = response) %>%
-  add_p() %>%
-  bold_labels()
+penguins %>%
+  select(bill_length_mm, species, body_mass_g) %>%
+  tbl_summary(
+    by = species,
+    label = list(bill_length_mm = "Bill length (mm)", 
+                 body_mass_g = "Body mass (g)" )
+  ) %>% 
+  italicize_labels() %>% 
+  modify_caption('A pretty table with penguin data')
 ```
+
+---
+#  Changing statistics
+
+
+```{r}
+penguins %>%
+  select(bill_length_mm, species, body_mass_g) %>%
+  tbl_summary(
+    by = species,
+    label = list(bill_length_mm = "Bill length (mm)", 
+                 body_mass_g = "Body mass (g)" ),
+    statistic = list(bill_length_mm ~ "{median} ({p25}, {p75}), range {min}-{max}")
+  ) %>% 
+  italicize_labels() %>% 
+  modify_caption('A pretty table with penguin data')
+```
+
+
 
 ---
 
@@ -109,18 +144,49 @@ trial %>%
 
 reset_gtsummary_theme()
 ```
+
+---
+
+# Inline text
+
+```{r, echo = FALSE}
+tbl1 <- trial %>%
+  select(age, trt, marker) %>%
+  tbl_summary(
+    by = trt,
+    label = list(age = "Patient Age")
+  )
+
+tbl1
+```
+
+
+
+`inline_text(tbl1, variable = age, column = 'stat_1', pattern = '{median}') `
+
+The median age is `r inline_text(tbl1, variable = age, column = 'stat_1', pattern = '{median}') ` years
+
 ---
 
 # Why do we need gt? 
 
+I mainly use it when the dataset is too big for gtsummary
+
 Allows almost any type of formatting
 
-I mainly use it when the dataset is too big for gtsummary
+
 ---
 
 # A word of caution
 ```{r, echo=FALSE, out.height="10%", out.width="73%"}
 knitr::include_graphics(here::here('print_engines.png'))
 ```
+---
+# Where to learn more
+
+
+[GT video tutorial](https://www.youtube.com/watch?v=z0UGmMOxl-c)
+
+[gtsummary video tutorial](https://www.youtube.com/watch?v=tANo9E1SYJE)
 
 
