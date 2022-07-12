@@ -72,17 +72,31 @@ trial %>%
 
 ```{r}
 library(survival)
-
- adjusted <- coxph(Surv(ttdeath, death) ~ age + marker, trial) %>%
+ m1 <- coxph(Surv(ttdeath, death) ~ age , trial) %>%
   tbl_regression(exponentiate = TRUE)
- 
- adjusted
+
+ m1
 
 ```
 
 ---
 
 # Combine tables
+
+```{r}
+ m2 <- coxph(Surv(ttdeath, death) ~ age + marker, trial) %>%
+  tbl_regression(exponentiate = TRUE)
+ 
+ tbl_merge(list(m1,m2), tab_spanner = c('Model 1', 'Model 2') )
+```
+
+
+
+---
+# Themes
+
+Journals have different requirements
+
 
 ```{r}
 theme_gtsummary_journal(journal = 'lancet')
@@ -95,11 +109,6 @@ trial %>%
 
 reset_gtsummary_theme()
 ```
----
-# Themes
-
-Journals have different requirements
-
 ---
 
 # Why do we need gt? 
